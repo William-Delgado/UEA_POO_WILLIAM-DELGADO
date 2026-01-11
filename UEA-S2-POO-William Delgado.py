@@ -1,89 +1,59 @@
+# Programa: Calculadora de tarifa de estacionamiento
+# Funcionalidad: Este programa calcula el costo de estacionamiento según el tipo de vehículo
+# y las horas utilizadas. También aplica un descuento si el usuario es cliente frecuente.
 
-#     Clase base: Animal
-class Animal:
-    def __init__(self, nombre, especie, edad):
-        # 2. ENCAPSULAMIENTO (Protección de los atributos)
-
-        self._nombre = nombre
-        self._especie = especie
-        self._edad = edad
-
-    # -------- MÉTODO DE ABSTRACCIÓN --------
-    def descripcion(self):
-        """Devuelve una descripción general del animal."""
-        return f"{self._nombre} ({self._especie}), {self._edad} años"
-
-    # -------- MÉTODOS DE ENCAPSULAMIENTO --------
-    def get_edad(self):
-        return self._edad
-
-    def set_edad(self, nueva_edad):
-        if nueva_edad >= 0:
-            self._edad = nueva_edad
-
-    def get_nombre(self):
-        return self._nombre
-
-    def set_nombre(self, nuevo_nombre):
-        if len(nuevo_nombre) > 1:
-            self._nombre = nuevo_nombre
-
-# 3. HERENCIA (Perro y Gato heredan de Animal)
-# ---------------------------------------------------------
-# Se reutilizan los atributos básicos: nombre, especie y edad.
-# Se agregan atributos propios de cada tipo de animal:
-#   - Perro: raza
-#   - Gato: color
-# Así se evita duplicar código y se mejora la organización.
-# ---------------------------------------------------------
-class Perro(Animal):
-    def __init__(self, nombre, edad, raza):
-        super().__init__(nombre, "Perro", edad)
-        self.raza = raza
-
-    # ---------------------------------------------
-    # 4. POLIMORFISMO: redefinir descripcion()
-    # ---------------------------------------------
-    def descripcion(self):
-        return (f"Perro: {self._nombre}, {self._edad} años - "
-                f"Raza: {self.raza}")
-
-    def ladrar(self):
-        return "Guau guau!"
+def calcular_tarifa_por_hora(tipo_vehiculo):
+    """
+    Retorna la tarifa por hora según el tipo de vehículo.
+    """
+    if tipo_vehiculo == "moto":
+        return 0.75
+    elif tipo_vehiculo == "auto":
+        return 1.50
+    elif tipo_vehiculo == "camioneta":
+        return 2.00
+    else:
+        return 0.0
 
 
-class Gato(Animal):
-    def __init__(self, nombre, edad, color):
-        super().__init__(nombre, "Gato", edad)
-        self.color = color
+def main():
+    # string: datos de texto
+    nombre_cliente = input("Nombre del cliente: ")
+    tipo_vehiculo = input("Tipo de vehículo (moto/auto/camioneta): ").strip().lower()
 
-    # Polimorfismo nuevamente aplicado
-    def descripcion(self):
-        return (f"Gato: {self._nombre}, {self._edad} años - "
-                f"Color: {self.color}")
+    # int: horas como número entero
+    horas = int(input("Horas de estacionamiento (ej: 3): "))
 
-    def maullar(self):
-        return "Miau!"
+    # boolean: cliente frecuente (sí/no)
+    respuesta_frecuente = input("¿Eres cliente frecuente? (s/n): ").strip().lower()
+    es_cliente_frecuente = (respuesta_frecuente == "s")
+
+    # float: tarifa y costos
+    tarifa_por_hora = calcular_tarifa_por_hora(tipo_vehiculo)
+
+    # Validación simple
+    datos_validos = (tarifa_por_hora > 0) and (horas > 0)
+
+    if not datos_validos:
+        print("\nError: tipo de vehículo inválido o horas incorrectas.")
+    else:
+        subtotal = tarifa_por_hora * horas
+
+        # Descuento si es cliente frecuente
+        descuento = 0.10  # 10%
+        if es_cliente_frecuente:
+            total = subtotal * (1 - descuento)
+        else:
+            total = subtotal
+
+        print("\n--- RESUMEN ---")
+        print(f"Cliente: {nombre_cliente}")
+        print(f"Vehículo: {tipo_vehiculo}")
+        print(f"Horas: {horas}")
+        print(f"Tarifa por hora: ${tarifa_por_hora:.2f}")
+        print(f"Cliente frecuente: {es_cliente_frecuente}")
+        print(f"Total a pagar: ${total:.2f}")
 
 
-#     PROGRAMA PRINCIPAL (uso de las clases)
-
-p1 = Perro("Max", 5, "Labrador")
-g1 = Gato("Luna", 3, "Blanco")
-a1 = Animal("Criatura", "Desconocida", 10)
-
-# Polimorfismo en acción: mismo método, diferente resultado
-print(a1.descripcion())
-print(p1.descripcion())
-print(g1.descripcion())
-
-# Métodos propios de cada clase
-print(p1.ladrar())
-print(g1.maullar())
-
-# Uso del encapsulamiento
-p1.set_edad(6)
-p1.set_nombre("Maxito")
-
-print("Nuevo nombre:", p1.get_nombre())
-print("Nueva edad:", p1.get_edad())
+if __name__ == "__main__":
+    main()
