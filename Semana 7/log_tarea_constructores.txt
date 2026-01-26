@@ -1,0 +1,2 @@
+2026-01-25 19:09:09 - Se creó el objeto 'registro' y se abrió el archivo.
+2026-01-25 19:09:09 - Esta línea demuestra el uso de un recurso externo.
